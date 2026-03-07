@@ -1,0 +1,4 @@
+interface:
+  display_name: "SSH Remote Access"
+  short_description: "SSH access for remote code work"
+  default_prompt: "Use this skill to establish or restore SSH access to a remote Linux server, prefer key-based login, verify non-interactive connectivity, and only then edit remote code or run experiments."
