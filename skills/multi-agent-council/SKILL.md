@@ -56,41 +56,60 @@ agent_created: true
 
 | 议员 | model | 来源 |
 |---|---|---|
-| 议员 A | `kimi-k2.6` | Moonshot |
-| 议员 B | `deepseek-v4-pro` | DeepSeek |
+| 议员 A | `Kimi-K2.6` | Moonshot |
+| 议员 B | `Deepseek-V4-Pro` | DeepSeek |
 | 议员 C | `MiniMax-M3` | MiniMax |
 
 > 组合灵感来自 Fusion 平价面板（Kimi K2.6 + DeepSeek V4 Pro + Gemini 3 Flash 得分 64.7%，接近 Fable 5 的 65.3%，成本减半）。适配当前环境用 MiniMax M3 替代 Gemini Flash。
->
-> `model` 字段支持三类取值：(1) 内置/自定义模型别名（取决于当前 CodeBuddy 版本和 `~/.codebuddy/models.json` 配置，例如 `gpt-5.1-codex` / `gemini-3.1-pro` 等）；(2) `"inherit"` — 继承主会话当前模型；(3) 省略不写 — 回退到默认 sub-agent 模型（`CODEBUDDY_CODE_SUBAGENT_MODEL` 环境变量或 agent 配置 `models[0]`）。
 
 备选方案：
 
 | 预设 | 描述 |
 |---|---|
-| 默认（推荐） | Kimi K2.6 + DeepSeek V4 Pro + MiniMax M3 |
-| 当前模型 ×3 | 3 个 sub-agent 都用 current model（model 传 `"inherit"` 或省略不写），纯靠多次采样 + 合成获取收益 |
-| 自定义 | 手动输入每个 sub-agent 的 model 标识符（内置别名 / `inherit` / 在 `~/.codebuddy/models.json` 中自定义） |
+| 默认（推荐） | Kimi-K2.6 + Deepseek-V4-Pro + MiniMax-M3 |
+| 当前模型 ×3 | 3 个 sub-agent 都用 `inherit`（继承主会话模型），纯靠多次采样 + 合成获取收益 |
+| 自定义 | 手动指定每个 sub-agent 的 model 标识符（`inherit` / 可用别名） |
 
 **问题 2：参与议会的成员数量？**
 - 2 个（最少，已有合成收益）
 - 3 个（推荐）
 - 4 个（更多视角，但成本翻倍）
 
-用户选择后，立即进入阶段 1。
+用户选择后，进入阶段 1。
 
 ---
 
 ### 阶段 1：分派任务（必须并行）
 
-**在同一条消息中**发起对应数量的 `Agent` 工具调用。
+**CodeBuddy 中指定 sub-agent 模型的正确方式：**
+
+通过 `.codebuddy/agents/<name>.md` 文件定义 agent，在 YAML frontmatter 中写 `model` 字段：
+
+```markdown
+---
+name: council-member-a
+description: 议员 A
+tools: Read, Bash, Grep, WebSearch, WebFetch
+model: Kimi-K2.6
+---
+
+请独立、完整地回答用户问题，输出格式：
+## 我的结论
+## 论证过程
+## 不确定的地方
+```
+
+> ⚠️ **重要**：CodeBuddy 的 agent 配置**不支持热重载**。修改已有 `.md` 文件后，系统可能仍使用缓存版本。如需更换模型，**建议新建文件**而非编辑旧文件。
+
+**在同一条消息中**发起对应数量的 `task` 工具调用，每个调用 `subagent_name` 指向一个已定义的 agent：
+
+```
+task: { subagent_name: "council-member-a", prompt: "..." }
+task: { subagent_name: "council-member-b", prompt: "..." }
+task: { subagent_name: "council-member-c", prompt: "..." }
+```
 
 **关键约束：每个 sub-agent 收到的 prompt 必须包含完整的原始问题 + 完整的工作要求，不做任务拆分。**
-
-**subagent_type 选择：**
-- `general-purpose` 通用性最好，推荐作为默认
-- `Explore` 偏搜索/调研，适合信息密集型问题
-- 所有 sub-agent 统一使用 `general-purpose` 即可，博客未涉及 subagent_type 差异
 
 **示例 prompt 模板（原样发给每个 sub-agent）：**
 
@@ -116,6 +135,8 @@ agent_created: true
 ## 不确定的地方
 （如实标注，包括可能的错误）
 ```
+
+> **注意**：不要依赖 sub-agent 自述模型身份。agent 经常幻觉自己的模型名。如需确认实际路由模型，请通过后台日志/监控验证。
 
 ### 阶段 2：对比分析（主 agent 担任 Judge）
 
@@ -154,21 +175,24 @@ agent_created: true
 ## Pitfalls
 
 - ❌ **把问题拆给 sub-agent 分工**——这是流水线思维不是议会思维。后果：答卷残缺、误差累积
-- ❌ **串行调用 sub-agent**：必须在同一条消息发起多个 Agent 调用
+- ❌ **串行调用 sub-agent**：必须在同一条消息发起多个 `task` 调用
 - ❌ **主 agent 偷懒**：直接转述某个 sub-agent 的输出，没有真正综合
 - ❌ **平均化所有观点**：为了"客观"把所有意见中和，丢失立场和洞见
 - ❌ **绕过对比直接出结果**：跳过阶段 2 的分析直接到阶段 3
 - ❌ **限制 sub-agent 工具调用次数**：不限制，让 sub-agent 自主调研
+- ❌ **编辑已有 agent 文件后直接使用**：CodeBuddy 可能缓存旧配置，建议新建文件
 
 ## Verification
 
 - [ ] 步骤 0：是否询问了用户选择模型？
-- [ ] 阶段 1：≥2 个并行 Agent 调用？model 参数是否按用户选择填入？
+- [ ] 阶段 1：≥2 个并行 `task` 调用？每个 agent 的 `.md` 配置中 `model` 字段是否正确？
+- [ ] 如需更换模型，是否新建了 agent 文件（而非编辑旧文件）？
 - [ ] 每个 sub-agent 收到了完整的原始问题？
 - [ ] 每个 sub-agent 给出了完整答卷（理解→调研→结论）？
 - [ ] 最终答案引用了具体证据？
 - [ ] 分歧被明确标注而非回避？
 - [ ] 对事实矛盾做了交叉验证？
+- [ ] 是否通过后台日志（而非 sub-agent 自述）验证了实际路由模型？
 
 ## Notes
 
@@ -176,3 +200,4 @@ agent_created: true
 - 合成步骤是主要收益来源（参考 Fusion 自融合的 +6.7pp），模型多样性是增量（+2.1pp）。即使 sub-agent 全跑同一模型，多次采样 + 对比合成仍然有价值。
 - 主 agent 既是 Judge 也是 Synthesizer
 - 灵感来自 OpenRouter Fusion 博客 https://openrouter.ai/blog/announcements/fusion-beats-frontier/
+- **CodeBuddy 默认 sub-agent 行为**：未使用本 skill 时，CodeBuddy 仅在需要搜索/探索代码库时自动调用内置 `code-explorer` agent。所有 sub-agent 的模型解析优先级为：(1) agent 文件中的 `model` 字段 → (2) `CODEBUDDY_CODE_SUBAGENT_MODEL` 环境变量 → (3) agent 配置 `models[0]` → (4) 回退到主会话模型。如果没有任何配置，sub-agent 默认继承主会话模型。
