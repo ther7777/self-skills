@@ -1,0 +1,4 @@
+interface:
+  display_name: "Research Decision Gate"
+  short_description: "Research decision anti-self-deception gate"
+  default_prompt: "Use $research-decision-gate to review this research decision before we continue."
