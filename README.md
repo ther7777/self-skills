@@ -26,7 +26,11 @@ skills/
 ├── extract-paper-images/      # OrbitOS 生态（来源见下）
 ├── conf-papers/               # OrbitOS 生态（来源见下）
 ├── start-my-day/              # 下载自 MarsWang42/OrbitOS
-├── ai-research-advisor-framework/  # 来源待确认
+├── external-ai-brief/          # 自己原创
+├── research-decision-gate/     # 自己原创
+├── multi-agent-council/        # 自己原创
+├── gpu-training-optimizer/    # 自己原创（含 _internals/ 子 skill 群）
+├── gpu-static-analysis/       # 自己原创（依赖 gpu-training-optimizer 的子 skill）
 ├── huashu-nuwa/               # 下载自 alchaincyf/nuwa-skill
 └── pua/                       # 下载自 tanweai/pua（含所有人格子 skill）
 ```
@@ -44,6 +48,8 @@ skills/
 | `resume-optimizer` | 算法/AI 工程岗位（校招/实习）简历优化 SOP。将原始笔记、逐字稿或项目描述提炼为可量化、可追问、可面试展开的简历要点。 |
 | `ssh-remote-access` | 远程 SSH 访问流程。在修改远程代码或运行实验前，先建立并验证到 Linux 服务器的连接与操作链路。 |
 | `connect-3090` | 连接本地 3090 GPU 服务器的快捷 skill，包含路径跳转、环境检查等私有配置。**（尚未同步到本仓库）** |
+| `gpu-training-optimizer` | 端到端 GPU 训练智能调优：静态分析 → 硬件采集 → Profiling → 瓶颈诊断 → 代码优化 → 验证迭代。支持 LlamaFactory、ms-swift、VideoX-Fun、Flow-Factory、HF Trainer、vLLM、SGLang 等多框架专项审计，内含 17 个 `_internals/` 子 skill。 |
+| `gpu-static-analysis` | GPU 训练项目纯静态代码分析（无需 GPU/运行环境），扫描训练项目并输出优化建议报告。依赖 `gpu-training-optimizer/_internals/` 下的子 skill，需同时安装。 |
 
 ---
 
