@@ -1,22 +1,22 @@
 ---
 name: git-commit
-description: 提交代码到 git.woa.com
+description: 提交代码到远程仓库
 user-invocable: false
 ---
 
-# Skill: 提交代码到 git.woa.com
+# Skill: 提交代码到远程仓库
 
 ## 描述
-将代码变更提交到 git.woa.com 远程仓库。自动完成分支创建、暂存、提交、推送的完整流程。
+将代码变更提交到远程 Git 仓库（GitHub、GitLab 等）。自动完成分支创建、暂存、提交、推送的完整流程。
 
 ## 触发条件
 当用户说"提交代码"、"推送代码"、"push 代码"、"commit 并 push"等意图时触发。
 
 ## 规则（必须严格遵守）
 
-### 规则 1：禁止直接提交 master 分支
-- **绝对不允许**直接在 master 分支上 commit 或 push
-- 如果当前在 master 分支，必须先创建并切换到 develop 分支
+### 规则 1：禁止直接提交 master/main 分支
+- **绝对不允许**直接在 master 或 main 分支上 commit 或 push
+- 如果当前在 master/main 分支，必须先创建并切换到 develop 分支
 - 如果用户强制要求提交到 master，明确拒绝并解释原因
 
 ### 规则 2：分支命名规范
@@ -69,13 +69,13 @@ git diff
 git branch --show-current
 ```
 
-2. **如果当前在 master 分支**（必须切换）：
+2. **如果当前在 master 或 main 分支**（必须切换）：
    - 生成目标分支名：`develop_<summary>`
    - 检查远程是否已有该分支：
      ```bash
      git ls-remote --heads origin develop_<summary>
      ```
-   - 如果远程不存在，从 master 创建并切换：
+   - 如果远程不存在，从当前分支创建并切换：
      ```bash
      git checkout -b develop_<summary>
      ```
@@ -88,16 +88,16 @@ git branch --show-current
 3. **如果当前已在 `develop_*` 分支**：
    - 直接使用当前分支，无需切换
 
-4. **如果当前在其他非 master 非 develop 分支**：
+4. **如果当前在其他非保护分支**：
    - 告知用户当前分支名称，询问是否继续在该分支提交或创建新的 develop 分支
 
 ### 第四步：暂存文件
 
 1. **排除敏感文件**：以下文件绝不暂存
    - `.env`、`credentials.json`、`*token*`、`*secret*`
-   - `.claude/settings.local.json`（包含代理密码和 token）
+   - 任何包含凭据或密钥的配置文件
 
-2. **按类型暂存**：
+2. **按文件暂存**：
    - 对修改的已跟踪文件和新文件，按文件名逐个 `git add`
    - **不使用** `git add -A` 或 `git add .`
 
@@ -129,7 +129,7 @@ EOF
 git push -u origin <branch-name> 2>&1
 ```
 
-- 如果推送失败（认证问题），提示用户检查 `~/.git-credentials` 或手动执行 push
+- 如果推送失败（认证问题），提示用户检查凭据配置或手动执行 push
 - 如果推送失败（冲突），先 `git pull --rebase origin <branch>` 再重试
 
 ### 第七步：输出结果
@@ -143,14 +143,10 @@ git push -u origin <branch-name> 2>&1
 - 远程: <remote-url>
 ```
 
-如果是新分支的首次推送，额外提示用户可以在 git.woa.com 上创建 Merge Request：
-
-```
-如需合并到 master，请创建 MR: <git.woa.com MR 链接>
-```
+如果是新分支的首次推送，提示用户可以在远程仓库平台创建 Pull Request / Merge Request。
 
 ## 注意事项
 
-- 整个流程中如果遇到网络问题，git.woa.com 需要通过已配置的 git 代理访问（`http.https://git.woa.com.proxy`），一般 `git push` 会自动使用
+- 如果遇到网络问题（如内网环境需要代理访问外网仓库），请先执行 `setup-proxy` 配置代理
 - 不要修改用户的 git 全局配置（`git config --global`）
-- 如果用户明确指定了分支名，使用用户指定的名称（但仍需验证不是 master）
+- 如果用户明确指定了分支名，使用用户指定的名称（但仍需验证不是 master/main）

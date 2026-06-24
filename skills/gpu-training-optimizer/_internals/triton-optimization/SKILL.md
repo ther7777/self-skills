@@ -1,15 +1,16 @@
 ---
 name: triton-optimization
 description: Triton 算子性能优化与热点算子融合加速
-user-invocable: false
 ---
+
+# Skill: Triton 算子性能优化
 
 ## 描述
 指导用户使用 OpenAI Triton 编写高性能自定义 GPU 算子，替换训练/推理中的热点算子瓶颈。涵盖 Triton 编程模型、常见融合算子模板（Fused Softmax、LayerNorm/RMSNorm、SwiGLU/GeGLU、RoPE、CrossEntropy、Fused Linear+Loss）、auto-tuning 策略、内存优化技巧、PyTorch 集成、生态工具（Liger Kernel/Unsloth/FlagGems）选型以及性能调试方法论。
 
 ## 触发条件
 当以下任一条件满足时触发：
-1. **Profiling 发现热点算子瓶颈**：PyTorch Profiler 或 Nsight Systems 显示某个算子（如 LayerNorm、Softmax、Activation、RoPE、CrossEntropy 等）占比显著（>10% 总耗时），且无现成优化库可用
+1. **Profiling 发现热点算子瓶颈**：PyTorch Profiler 或 Nsight Systems 显示某个��子（如 LayerNorm、Softmax、Activation、RoPE、CrossEntropy 等）占比显著（>10% 总耗时），且无现成优化库可用
 2. **Kernel Launch Overhead 高**：大量小 kernel 导致 GPU 利用率低，需要通过算子融合减少 kernel 数量
 3. **显存瓶颈由中间结果引起**：多个相邻算子的中间 tensor 占用大量显存，fusion 可消除中间分配
 4. **用户显式要求 Triton 优化**：用户指定使用 Triton 编写自定义 kernel

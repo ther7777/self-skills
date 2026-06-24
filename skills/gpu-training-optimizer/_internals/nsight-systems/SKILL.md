@@ -1,8 +1,9 @@
 ---
 name: nsight-systems
 description: NVIDIA Nsight Systems 系统级 GPU Profiling
-user-invocable: false
 ---
+
+# Skill: Nsight Systems 性能分析
 
 ## 描述
 使用 NVIDIA Nsight Systems (`nsys`) 对 GPU 训练/推理工作负载进行系统级性能分析。Nsight Systems 提供 CPU + GPU 的全局时间线视图，能捕获 CUDA API 调用、GPU kernel 执行、NVTX 标注、内存操作、NCCL 通信等，是定位 GPU 利用率瓶颈、CPU-GPU 交互问题和分布式通信开销的首选工具。

@@ -687,7 +687,7 @@ profiler = profile(
   logging_steps: 1       # 每步输出日志，方便观察
   ```
 - **Profiler 插桩位置**：LlamaFactory 底层使用 HuggingFace Trainer，Profiler 应插入到 `src/llamafactory/train/trainer_utils.py` 或对应 stage 的 `workflow.py` 中，在 `Trainer` 初始化时通过 `TrainerCallback` 注入 profiler，避免深改训练循环
-- **自定义启动脚本处理**：如果用户的启动命令是自定义脚本（如 `python venus_start.sh --config xxx.yaml`），需要：
+- **自定义启动脚本处理**：如果用户的启动命令是自定义脚本（如 `python start.sh --config xxx.yaml` 或 `bash train.sh`），需要：
   1. 先读取该脚本，理解其功能（通常是设置环境变量后调用 `llamafactory-cli train` 或等效入口）
   2. 找到实际的 YAML 配置文件路径
   3. 通过修改 YAML 配置实现步数限制和保存禁用

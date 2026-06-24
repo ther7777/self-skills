@@ -1,8 +1,9 @@
 ---
 name: training-acceleration-audit
 description: LLM/MLLM 训练加速审计，扫描项目并输出评分报告
-user-invocable: false
 ---
+
+# Skill: LLM/MLLM 训练加速审计
 
 ## 描述
 分析用户提供的 LLM/MLLM 训练项目，判断哪些加速工具和策略已在使用、哪些尚未采用，并提供可落地的优化建议。
@@ -92,7 +93,7 @@ user-invocable: false
 |---|---|---|
 | **Flash Attention** | `flash_attn`、`flash_attention`、`FlashAttention`、`attn_implementation.*flash` | 显著减少 HBM 读写，已成为训练标配 |
 | **torch.compile** | `torch.compile`、`compiled_model`、`_dynamo`、`inductor` | PyTorch 2.x 图编译，自动算子融合 |
-| **Triton 自定义算子** | `triton`、`@triton.jit`、`tl.load`、`tl.store`、`triton.autotune`、`tl.program_id` | 用 Python 编写高性能 GPU kernel。参考 `/triton-optimization` skill 的决策树判断是否需要编写自定义 Triton kernel，或使用 Liger Kernel/FlagGems 等生态工具 |
+| **Triton 自定义算子** | `triton`、`@triton.jit`、`tl.load`、`tl.store`、`triton.autotune`、`tl.program_id` | 用 Python 编写高性能 GPU kernel。参考 Triton 优化决策树判断是否需要编写自定义 Triton kernel，或使用 Liger Kernel/FlagGems 等生态工具 |
 | **CUDA Graph** | `cuda_graph`、`CUDAGraph`、`make_graphed_callables` | 减少 kernel launch 开销，适用于固定形状输入 |
 | **Liger Kernel** | `liger_kernel`、`AutoLigerKernelForCausalLM`、`apply_liger_kernel_to_`、`LigerRMSNorm`、`LigerSwiGLUMLP`、`LigerCrossEntropyLoss`、`LigerFusedLinearCrossEntropyLoss`、`liger_rotary_pos_emb` | **高优先级**：LinkedIn 开源的 Triton 算子融合库，对 RMSNorm、RoPE、SwiGLU、CrossEntropy 等层做 kernel fusion 和 in-place 替换。可提升训练吞吐 20%、降低显存 60%，仅需一行代码接入。与 Flash Attention、FSDP、DeepSpeed 兼容。支持 LLaMA、Qwen、Gemma、Mistral、Phi、GLM、InternVL 等主流模型。`FusedLinearCrossEntropy` 将最后的 linear 层与 cross entropy 融合，对大词表场景显存节省尤为显著 |
 | **算子融合** | `fused_adam`、`FusedAdam`、`fused_layer_norm`、`apex.fused`、`xformers` | 减少 kernel 调用次数和中间显存分配 |

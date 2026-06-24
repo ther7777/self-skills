@@ -1,8 +1,9 @@
 ---
 name: flash-attention
 description: Flash Attention 版本选型与最佳配置
-user-invocable: false
 ---
+
+# Skill: Flash Attention 最佳配置
 
 ## 描述
 指导用户为其 GPU 训练/推理工作负载选择并配置最优的 Flash Attention 版本，涵盖版本选型、安装、API 使用、HuggingFace/框架集成、推理 KV Cache 优化等，目标是"开启到最佳"。
@@ -399,7 +400,7 @@ output = flash_attn_with_kvcache(
 
 GQA（Grouped Query Attention）和 MQA（Multi-Query Attention）通过减少 KV head 数显著降低 KV Cache 大小：
 
-| Attention 类型 | KV head 数 | KV Cache 大小（相对 MHA） | 代表模型 |
+| Attention 类型 | KV head 数 | KV Cache 大小（相�� MHA） | 代表模型 |
 |---------------|-----------|------------------------|---------|
 | MHA | = Q head 数 | 1x | GPT-3, LLaMA-1 |
 | GQA | Q head 数 / group | 1/group（如 1/4, 1/8） | LLaMA-2/3, Qwen-2, Gemma |

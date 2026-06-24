@@ -1,8 +1,9 @@
 ---
 name: deepspeed-optimization
 description: DeepSpeed ZeRO 显存优化与训练加速
-user-invocable: false
 ---
+
+# Skill: DeepSpeed 显存优化与训练加速
 
 ## 描述
 指导用户使用 DeepSpeed 进行 LLM/MLLM 训练的显存优化和加速，涵盖 ZeRO Stage 选型、混合精度、CPU/NVMe 卸载、通信优化、激活重计算等全链路配置，目标是根据用户的硬件条件和模型规模选择最优的 DeepSpeed 配置方案。

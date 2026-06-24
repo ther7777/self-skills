@@ -1,8 +1,9 @@
 ---
 name: system-resources
 description: 机器资源信息采集（CPU/内存/GPU/磁盘/网卡）
-user-invocable: false
 ---
+
+# Skill: 机器资源信息采集
 
 ## 描述
 采集当前机器的 CPU、内存、GPU 显存、磁盘、网卡及 RDMA、GPU 拓扑等真实运行资源信息，并生成结构化报告，为代码优化和性能调优（如 batch size 选择、ZeRO Stage 选型、CPU Offload 可行性评估、多机通信策略等）提供数据支撑。

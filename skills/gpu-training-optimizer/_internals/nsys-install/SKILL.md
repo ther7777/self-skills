@@ -1,8 +1,9 @@
 ---
 name: nsys-install
 description: Nsight Systems 自动检测、安装与升级
-user-invocable: false
 ---
+
+# Skill: Nsight Systems 安装与升级
 
 ## 描述
 检测当前环境的 Nsight Systems (`nsys`) 安装状态，如果缺失或版本过旧（不支持 `--pytorch` 等关键特性），则自动下载安装对应版本的 Nsight Systems 独立包。支持 x86_64 和 aarch64 架构，覆盖 Ampere/Hopper/Blackwell GPU。
@@ -12,7 +13,7 @@ user-invocable: false
 - 运行 `nsys` 命令提示找不到
 - 当前 nsys 版本不支持 `--pytorch` 自动标注（低于 2025.1）
 - 用户明确要求安装或升级 Nsight Systems
-- `/gpu-training-optimizer` 流程中第四步检测到 nsys 不可用或版本过低
+- GPU 训练优化器流程中第四步检测到 nsys 不可用或版本过低
 
 ## 执行指令
 
@@ -110,9 +111,7 @@ else:
 
 #### 4.0 配置外网代理
 
-下载 NVIDIA 安装包需要访问外网。**在下载之前，先执行 `/setup-proxy` skill 配置代理**，确保网络连通：
-
-> 调用 `/setup-proxy` skill 完成代理配置并验证外网连通性。如果 `/setup-proxy` 执行后仍无法访问外网，在输出中提示用户检查代理配置后终止安装流程。
+下载 NVIDIA 安装包需要访问外网。**在下载之前，先配置代理确保网络连通**。
 
 #### 4.1 构造下载 URL
 
