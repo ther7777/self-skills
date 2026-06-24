@@ -50,6 +50,9 @@ skills/
 | `connect-3090` | 连接本地 3090 GPU 服务器的快捷 skill，包含路径跳转、环境检查等私有配置。**（尚未同步到本仓库）** |
 | `gpu-training-optimizer` | 端到端 GPU 训练智能调优：静态分析 → 硬件采集 → Profiling → 瓶颈诊断 → 代码优化 → 验证迭代。支持 LlamaFactory、ms-swift、VideoX-Fun、Flow-Factory、HF Trainer、vLLM、SGLang 等多框架专项审计，内含 17 个 `_internals/` 子 skill。 |
 | `gpu-static-analysis` | GPU 训练项目纯静态代码分析（无需 GPU/运行环境），扫描训练项目并输出优化建议报告。依赖 `gpu-training-optimizer/_internals/` 下的子 skill，需同时安装。 |
+| `external-ai-brief` | 生成自包含的决策上下文闭包，用于向不能访问本地文件的外部强 AI 求助。适合需要决策/认知交接、或把项目上下文整理成外部可消费格式的场景。 |
+| `research-decision-gate` | 研究决策门：在决定是否继续某个方向、运行实验、切换路线时使用。检查泛化性、创新边界、评估可信度、ROI 与停止条件，输出 GO / SMALL BET / REFRAME / STOP 判定。 |
+| `multi-agent-council` | 多 Agent 协作议会：多个 sub-agent 对同一问题独立给出完整答案，主 agent 担任裁判+合成器。灵感来自 OpenRouter Fusion，适用于多视角、深度调研、避免单模型偏见的复杂问题。 |
 
 ---
 
