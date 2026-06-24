@@ -1,10 +1,10 @@
 # self-skills
 
-My personal collection of reusable skills for AI coding agents (Claude Code, Codex, Cursor, and compatible tools). Built from daily workflows to reduce repetition and keep execution consistent across sessions.
+个人 AI 编程助手技能（Claude Code、Codex、Cursor 等兼容），工作流中积累复用，自己日常使用。
 
 ---
 
-## Directory
+## 目录
 
 ```
 skills/<skill-name>/SKILL.md
@@ -12,7 +12,7 @@ skills/<skill-name>/SKILL.md
 
 ```
 skills/
-├── gpu-training-optimizer/         # 17 sub-skills in _internals/
+├── gpu-training-optimizer/         # 含 17 个 _internals/ 子技能
 ├── gpu-static-analysis/
 ├── paper-analyze/
 ├── paper-search/
@@ -36,58 +36,58 @@ skills/
 
 ---
 
-## GPU Training
+## GPU 训练优化
 
-| Skill | Source | Description |
-|-------|--------|-------------|
-| `gpu-training-optimizer` | — | End-to-end GPU training optimization: static analysis → hardware profiling → bottleneck diagnosis → code optimization → validation. Supports LlamaFactory, ms-swift, VideoX-Fun, Flow-Factory, HF Trainer, vLLM, SGLang. Contains 17 internal sub-skills. |
-| `gpu-static-analysis` | — | Read-only static analysis for GPU training projects (no GPU required). Depends on sub-skills bundled with `gpu-training-optimizer`. |
+| 技能 | 来源 | 说明 |
+|-------|------|------|
+| `gpu-training-optimizer` | — | 端到端 GPU 训练智能调优：静态分析 → 硬件采集 → 性能剖析 → 瓶颈诊断 → 代码优化 → 验证迭代。支持 LlamaFactory、ms-swift、VideoX-Fun、Flow-Factory、HF Trainer、vLLM、SGLang 等框架。内含 17 个内部子技能。 |
+| `gpu-static-analysis` | — | GPU 训练项目纯静态代码分析，无需 GPU。依赖 `gpu-training-optimizer` 内的子技能。 |
 
-## Research & Papers
+## 论文与科研
 
-| Skill | Source | Description |
-|-------|--------|-------------|
-| `paper-analyze` | — | Deep-dive analysis of a single paper with detailed notes and figures. |
-| `paper-search` | — | Keyword, author, and field-based search across an organized paper notes library. |
-| `extract-paper-images` | — | Extracts paper figures, preferring arXiv source packages when available. |
-| `conf-papers` | — | Conference paper search and recommendations (CVPR, ICCV, ECCL, ICLR, AAAI, NeurIPS, ICML). |
-| `start-my-day` | [MarsWang42/OrbitOS](https://github.com/MarsWang42/OrbitOS) | Generates a daily paper and news recommendation note. |
-| `ai-research-advisor-framework` | — | Routes research questions to perspective agents (Ilya, Munger, Taleb, Karpathy, Feynman, Musk) and synthesizes their outputs. |
+| 技能 | 来源 | 说明 |
+|-------|------|------|
+| `paper-analyze` | — | 深度分析单篇论文，生成详细笔记与图表。 |
+| `paper-search` | — | 在已有论文笔记中按关键词、作者、领域搜索。 |
+| `extract-paper-images` | — | 从论文中提取图片，优先使用 arXiv 源码包。 |
+| `conf-papers` | — | 顶会论文搜索推荐（CVPR、ICCV、ECCV、ICLR、AAAI、NeurIPS、ICML）。 |
+| `start-my-day` | [MarsWang42/OrbitOS](https://github.com/MarsWang42/OrbitOS) | 生成每日论文与资讯推荐笔记。 |
+| `ai-research-advisor-framework` | — | 将研究问题路由到多视角子代理（Ilya、芒格、塔勒布、Karpathy、费曼、马斯克），汇总输出。 |
 
-## Agent Workflow
+## Agent 工作流
 
-| Skill | Source | Description |
-|-------|--------|-------------|
-| `copilot-rule` | — | Enforces conversation continuity — agent must suggest next steps after every completed task. |
-| `multi-agent-council` | — | Multi-agent council inspired by OpenRouter Fusion. Sub-agents independently answer the same question; the lead synthesizes results. |
-| `research-decision-gate` | — | Decision checkpoint for research work: GO / SMALL BET / REFRAME / STOP. Checks generality, innovation boundary, evaluation quality, and ROI. |
-| `external-ai-brief` | — | Generates a self-contained decision context for consulting external AI that cannot access local files. |
+| 技能 | 来源 | 说明 |
+|-------|------|------|
+| `copilot-rule` | — | 对话连续性规则：每完成一项任务后主动给出下一步选项。 |
+| `multi-agent-council` | — | 多 Agent 协作议会，受 OpenRouter Fusion 启发。多个子代理独立回答同一问题，主代理对比合成。 |
+| `research-decision-gate` | — | 研究决策检查点：GO / SMALL BET / REFRAME / STOP。检查泛化性、创新边界、评估可信度、ROI。 |
+| `external-ai-brief` | — | 生成自包含决策上下文，供无法访问本地文件的外部 AI 使用。 |
 
-## Resume & Career
+## 简历与求职
 
-| Skill | Source | Description |
-|-------|--------|-------------|
-| `resume-optimizer` | — | SOP for AI/algorithm engineering resumes (campus & internship). Converts raw notes into quantifiable, interview-ready bullet points. |
-| `tex-resume-validator` | — | Full LaTeX resume edit loop: compile, lint, preview PDF, clean up after every `.tex` change. |
+| 技能 | 来源 | 说明 |
+|-------|------|------|
+| `resume-optimizer` | — | AI/算法岗（校招/实习）简历优化 SOP，将原始笔记转化为可量化的面试要点。 |
+| `tex-resume-validator` | — | LaTeX 简历编辑闭环：编译 → 查错 → 预览 PDF → 清理临时文件。 |
 
-## Dev Tools
+## 开发工具
 
-| Skill | Source | Description |
-|-------|--------|-------------|
-| `ssh-remote-access` | — | Reliably establishes SSH connections to Linux servers before remote code edits or experiments. |
-| `setup-proxy` | — | Auto-detects and configures HTTP/HTTPS proxy for restricted network environments. |
-| `git-commit` | — | Structured git commit workflow: branch → stage → commit → push, with Conventional Commits and safety rules. |
+| 技能 | 来源 | 说明 |
+|-------|------|------|
+| `ssh-remote-access` | — | 远程 SSH 连接建立与验证，修改代码或运行实验前的准备流程。 |
+| `setup-proxy` | — | 自动检测并配置 HTTP/HTTPS 代理，适配受限网络环境。 |
+| `git-commit` | — | 结构化 Git 提交流程：分支管理 → 暂存 → 提交 → 推送，遵循 Conventional Commits 规范。 |
 
-## Extras
+## 其他
 
-| Skill | Source | Description |
-|-------|--------|-------------|
-| `web-access` | [eze-is/web-access](https://github.com/eze-is/web-access) | Full web access: search, scraping, CDP browser automation, social media capture. |
-| `huashu-nuwa` | [alchaincyf/nuwa-skill](https://github.com/alchaincyf/nuwa-skill) | Distills notable thinkers' mental models into runnable AI skills (Jobs, Musk, Feynman, Taleb, etc.). |
-| `pua` | [tanweai/pua](https://github.com/tanweai/pua) | High-agency mode with tiered corporate pressure dynamics (P7-P10), self-evolution, and more. MIT licensed. |
+| 技能 | 来源 | 说明 |
+|-------|------|------|
+| `web-access` | [eze-is/web-access](https://github.com/eze-is/web-access) | 联网搜索、网页抓取、CDP 浏览器自动化、社交媒体内容抓取。 |
+| `huashu-nuwa` | [alchaincyf/nuwa-skill](https://github.com/alchaincyf/nuwa-skill) | 女娲造人：将名人/角色的思维方式蒸馏为可运行的 AI 技能（Jobs、Musk、Feynman、Taleb 等）。 |
+| `pua` | [tanweai/pua](https://github.com/tanweai/pua) | 高能动性模式，含 P7-P10 职级模式及多种子模式。MIT 协议。 |
 
 ---
 
-## Note
+## 说明
 
-This is a personal skill collection maintained for my own use. Skills without a linked source are written or adapted by me. Community-sourced skills are mirrored here as backups — check their upstream repos for the latest versions.
+本仓库为个人使用维护。未标注来源的技能为自写或自行适配。来自社区的技能备份于此，更新请以原仓库为准。
