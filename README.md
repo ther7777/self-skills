@@ -1,124 +1,108 @@
 # self-skills
 
-这是一个用于沉淀个人工作流的 Claude Code / Codex Skills 仓库。
+Personal collection of reusable skills for AI coding agents (Claude Code, Codex, Cursor, and compatible tools).
 
-这些技能模板来自可复用的实战流程总结，目标是：
-
-- 减少重复劳动；
-- 降低遗漏关键步骤的概率；
-- 让 Claude / Codex 在不同任务中保持一致、稳定的执行节奏。
+Each skill encodes a repeatable workflow — from GPU training optimization to paper analysis — to reduce manual repetition and ensure consistent execution across sessions.
 
 ---
 
-## 目录结构
+## Directory
 
-所有 skill 统一放在 `skills/<skill-name>/` 目录下，每个 skill 的核心入口为 `SKILL.md`。
+All skills live under `skills/<skill-name>/`, with `SKILL.md` as the entry point.
 
 ```
 skills/
-├── copilot-rule/              # 自己原创
-├── tex-resume-validator/      # 自己原创
-├── resume-optimizer/          # 自己原创
-├── ssh-remote-access/         # 自己原创
-├── web-access/                # 下载自社区
-├── paper-analyze/             # OrbitOS 生态（来源见下）
-├── paper-search/              # OrbitOS 生态（来源见下）
-├── extract-paper-images/      # OrbitOS 生态（来源见下）
-├── conf-papers/               # OrbitOS 生态（来源见下）
-├── start-my-day/              # 下载自 MarsWang42/OrbitOS
-├── external-ai-brief/          # 自己原创
-├── research-decision-gate/     # 自己原创
-├── multi-agent-council/        # 自己原创
-├── gpu-training-optimizer/    # 自己原创（含 _internals/ 子 skill 群）
-├── gpu-static-analysis/       # 自己原创（依赖 gpu-training-optimizer 的子 skill）
-├── huashu-nuwa/               # 下载自 alchaincyf/nuwa-skill
-└── pua/                       # 下载自 tanweai/pua（含所有人格子 skill）
+├── copilot-rule/                # Original
+├── tex-resume-validator/        # Original
+├── resume-optimizer/            # Original
+├── ssh-remote-access/           # Original
+├── external-ai-brief/           # Original
+├── research-decision-gate/      # Original
+├── multi-agent-council/         # Original
+├── gpu-training-optimizer/      # Original (17 sub-skills in _internals/)
+├── gpu-static-analysis/         # Original (depends on gpu-training-optimizer)
+├── web-access/                  # Community
+├── huashu-nuwa/                 # Community
+├── pua/                         # Community
+├── start-my-day/                # Community (OrbitOS ecosystem)
+├── paper-analyze/               # OrbitOS ecosystem
+├── paper-search/                # OrbitOS ecosystem
+├── extract-paper-images/        # OrbitOS ecosystem
+├── conf-papers/                 # OrbitOS ecosystem
+└── ai-research-advisor-framework/  # Source unconfirmed
 ```
 
 ---
 
-## 1. 自己原创 / 个人适配的技能
+## Original Skills
 
-这些技能完全由我个人编写或针对本地环境（如 3090 服务器）深度定制，无外部上游仓库。
+Skills created or significantly adapted for personal workflows.
 
-| Skill | 说明 |
-|-------|------|
-| `copilot-rule` | 对话连续性规则。每个阶段结束后主动给出下一步选项，避免任务完成后对话突然中断。 |
-| `tex-resume-validator` | LaTeX 简历编辑闭环。任何 `.tex` 改动后，按固定流程执行编译、查错、预览 PDF、清理临时文件并汇报结果。 |
-| `resume-optimizer` | 算法/AI 工程岗位（校招/实习）简历优化 SOP。将原始笔记、逐字稿或项目描述提炼为可量化、可追问、可面试展开的简历要点。 |
-| `ssh-remote-access` | 远程 SSH 访问流程。在修改远程代码或运行实验前，先建立并验证到 Linux 服务器的连接与操作链路。 |
-| `connect-3090` | 连接本地 3090 GPU 服务器的快捷 skill，包含路径跳转、环境检查等私有配置。**（尚未同步到本仓库）** |
-| `gpu-training-optimizer` | 端到端 GPU 训练智能调优：静态分析 → 硬件采集 → Profiling → 瓶颈诊断 → 代码优化 → 验证迭代。支持 LlamaFactory、ms-swift、VideoX-Fun、Flow-Factory、HF Trainer、vLLM、SGLang 等多框架专项审计，内含 17 个 `_internals/` 子 skill。 |
-| `gpu-static-analysis` | GPU 训练项目纯静态代码分析（无需 GPU/运行环境），扫描训练项目并输出优化建议报告。依赖 `gpu-training-optimizer/_internals/` 下的子 skill，需同时安装。 |
-| `external-ai-brief` | 生成自包含的决策上下文闭包，用于向不能访问本地文件的外部强 AI 求助。适合需要决策/认知交接、或把项目上下文整理成外部可消费格式的场景。 |
-| `research-decision-gate` | 研究决策门：在决定是否继续某个方向、运行实验、切换路线时使用。检查泛化性、创新边界、评估可信度、ROI 与停止条件，输出 GO / SMALL BET / REFRAME / STOP 判定。 |
-| `multi-agent-council` | 多 Agent 协作议会：多个 sub-agent 对同一问题独立给出完整答案，主 agent 担任裁判+合成器。灵感来自 OpenRouter Fusion，适用于多视角、深度调研、避免单模型偏见的复杂问题。 |
-
----
-
-## 2. 从社区下载的技能（来源已确认）
-
-以下技能来自 GitHub 或公开社区，已备份到本仓库。如需更新，请直接访问原始项目地址：
-
-### 2.1 联网与浏览器自动化
-
-| Skill | 原始项目地址 | 说明 |
-|-------|-------------|------|
-| `web-access` | https://github.com/eze-is/web-access | 一泽Eze 开发的完整联网 skill。支持搜索、网页抓取、CDP 浏览器自动化、社交媒体内容抓取等。 |
-
-### 2.2 论文阅读与研究工作流（OrbitOS 官方）
-
-| Skill | 原始项目地址 | 说明 |
-|-------|-------------|------|
-| `start-my-day` | https://github.com/MarsWang42/OrbitOS | MarsWang42 的 OrbitOS 系统中的「启动一天」skill，生成今日论文/资讯推荐笔记。 |
-
-### 2.3 人格化 / 高能动性引擎
-
-| Skill | 原始项目地址 | 说明 |
-|-------|-------------|------|
-| `pua` | https://github.com/tanweai/pua | OpenPUA 官方仓库。包含核心 PUA 模式、P7/P8/P9/P10 职级模式、`mama`（妈妈唠叨）、`yes`（夸夸模式）、`pro`（自进化/KPI）、`shot`（浓缩版）、`pua-loop`（自动迭代）等全部子 skill 及命令。 |
-| `huashu-nuwa` | https://github.com/alchaincyf/nuwa-skill | 花叔（alchaincyf）的「女娲 · Skill 造人术」。将名人/角色的思维方式蒸馏为可运行的 Claude Code skill，内含 Jobs、Musk、Feynman、Taleb 等多个示例 perspective。 |
+| Skill | Description |
+|-------|-------------|
+| `copilot-rule` | Enforces conversation continuity — the agent must suggest next steps after every completed task, preventing silent drop-offs. |
+| `tex-resume-validator` | Full LaTeX resume edit loop: compile, lint, preview PDF, and clean up artifacts after any `.tex` change. |
+| `resume-optimizer` | SOP for polishing AI/algorithm engineering resumes (campus & internship). Converts raw notes into quantifiable, interview-ready bullet points. |
+| `ssh-remote-access` | Reliably establishes and verifies SSH connections to Linux servers before editing remote code or running experiments. |
+| `connect-3090` | Quick-connect shortcut for a local 3090 GPU server. Contains private paths and environment checks. *(Not synced to this repo.)* |
+| `external-ai-brief` | Generates a self-contained decision context for consulting external AI that cannot access local files. |
+| `research-decision-gate` | Research decision checkpoint: GO / SMALL BET / REFRAME / STOP. Audits generality, innovation boundary, evaluation credibility, and ROI before committing more work. |
+| `multi-agent-council` | Multi-agent council inspired by OpenRouter Fusion. Multiple sub-agents independently answer the same question; the lead agent synthesizes consensus, flags disagreements, and delivers the final result. |
+| `gpu-training-optimizer` | End-to-end GPU training optimization: static analysis → hardware profiling → bottleneck diagnosis → code optimization → validation. Supports LlamaFactory, ms-swift, VideoX-Fun, Flow-Factory, HF Trainer, vLLM, and SGLang. Includes 17 sub-skills under `_internals/`. |
+| `gpu-static-analysis` | Read-only static analysis for GPU training projects (no GPU required). Produces an optimization report with concrete configuration and code suggestions. Requires `gpu-training-optimizer/_internals/` sub-skills to be installed. |
 
 ---
 
-## 3. 论文相关技能（OrbitOS 生态 / 来源待确认）
+## Community Skills
 
-以下 4 个 skill 内部大量引用 OrbitOS 的 vault 路径与命名规范（如 `$OBSIDIAN_VAULT_PATH/20_Research/Papers/...`），但**在 MarsWang42/OrbitOS 官方仓库中未找到同名的独立 skill 目录**。它们可能是：
+Skills sourced from public repositories, mirrored here as backups. Check upstream projects for the latest versions.
 
-1. 其他开发者基于 OrbitOS 风格二次创作的社区 skill；
-2. 我个人根据 OrbitOS 规范本地化适配后的版本；
-3. 来自 Lobehub 等 skill 市场但已被下架或未索引的 skill。
+### Browser & Network
 
-无论来源如何，它们都与 `start-my-day` 共享同一套 Obsidian vault 结构，属于同一工作流生态。
+| Skill | Source | Description |
+|-------|--------|-------------|
+| `web-access` | [eze-is/web-access](https://github.com/eze-is/web-access) | Full web access skill: search, scraping, CDP browser automation, social media capture. |
 
-| Skill | 说明 | 备注 |
-|-------|------|------|
-| `paper-analyze` | 深度分析单篇论文，生成图文并茂的详细笔记和评估。 | 基于 OrbitOS 风格 |
-| `paper-search` | 在已整理的论文笔记库中按关键词、作者、领域搜索。 | 基于 OrbitOS 风格 |
-| `extract-paper-images` | 从论文中提取图片，优先从 arXiv 源码包获取真正的论文图。 | 基于 OrbitOS 风格 |
-| `conf-papers` | 顶会论文搜索推荐（CVPR/ICCV/ECCV/ICLR/AAAI/NeurIPS/ICML）。 | 基于 OrbitOS 风格 |
+### Agent Personality & Agency
 
-> **如果你有这些 skill 的原始 GitHub/市场地址，欢迎补充到本 README。**
+| Skill | Source | Description |
+|-------|--------|-------------|
+| `pua` | [tanweai/pua](https://github.com/tanweai/pua) | High-agency mode with corporate pressure dynamics. Includes tiered modes (P7-P10), `mama` nag mode, `pro` self-evolution, and more. MIT licensed. |
+| `huashu-nuwa` | [alchaincyf/nuwa-skill](https://github.com/alchaincyf/nuwa-skill) | Distills the thinking patterns of notable figures into runnable AI skills. Ships with perspectives from Jobs, Musk, Feynman, Taleb, and others. |
 
 ---
 
-## 4. 其他来源待确认的技能
+## OrbitOS Ecosystem Skills
 
-| Skill | 说明 | 备注 |
-|-------|------|------|
-| `ai-research-advisor-framework` | AI 研究顾问：自动判断用户问题是「方向选择」还是「实验设计」，并行调度 Ilya/芒格/塔勒布/Karpathy/费曼/马斯克 等子 agent 分析后整合输出。 | 暂未找到公开上游仓库，可能来自中文社区分享或个人整理。 |
+These skills follow the [OrbitOS](https://github.com/MarsWang42/OrbitOS) workflow conventions and share its Obsidian vault structure. The paper-related skills (`paper-analyze`, `paper-search`, `extract-paper-images`, `conf-papers`) were not found as standalone directories in the official OrbitOS repository and may be community adaptations or local customizations.
+
+| Skill | Description |
+|-------|-------------|
+| `start-my-day` | Generates a daily paper and news recommendation note. From the official OrbitOS distribution. |
+| `paper-analyze` | Deep analysis of a single paper with detailed notes and figures. |
+| `paper-search` | Searches the organized paper notes library by keyword, author, or field. |
+| `extract-paper-images` | Extracts images from papers, preferring arXiv source packages over PDF snapshots. |
+| `conf-papers` | Top-tier conference paper search (CVPR, ICCV, ECCV, ICLR, AAAI, NeurIPS, ICML). |
 
 ---
 
-## 更新维护建议
+## Source Unconfirmed
 
-- **自己原创的技能**：直接在本仓库修改，无需担心上游冲突。
-- **来源已确认的社区 skill**：建议定期 `git pull` 原始仓库或关注 release，再将改动同步回本仓库备份。
-- **OrbitOS 生态 / 来源待确认 skill**：如后续找到原始出处，请更新本 README 并将链接补入对应表格。
+| Skill | Description |
+|-------|-------------|
+| `ai-research-advisor-framework` | Routes research questions to the right perspective agents (Ilya, Munger, Taleb, Karpathy, Feynman, Musk), then synthesizes their outputs. Origin unknown — likely a community share or personal adaptation. |
+
+---
+
+## Maintenance
+
+- **Original skills**: Edit directly in this repository.
+- **Community skills**: Pull from upstream periodically for fixes and features, then sync back to this backup.
+- **OrbitOS / unconfirmed skills**: If you recognize the original source of any uncredited skill, contributions to update this README are welcome.
 
 ---
 
 ## License
 
-- 自己原创 skill：按个人使用自由分发。
-- 下载自社区的 skill：遵循各自原始仓库的 License（如 `web-access` 为 MIT，`pua` 为 MIT，`nuwa-skill` 按原仓库协议）。
+- Original skills in this repository are free for personal use.
+- Community skills follow their respective upstream licenses (e.g., `web-access` is MIT, `pua` is MIT).
